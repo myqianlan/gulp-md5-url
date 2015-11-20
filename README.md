@@ -1,37 +1,48 @@
-# gulp-md5-plus
+# gulp-md5-url
 
-> md5 plugin for [gulp](https://github.com/wpfpizicai/gulp-md5-plus) ,md5 the static files(eg javascript style image files) ;then replace the filenames in css or the html if needed by passing the file or dir in the second parameter
+This is a fork of [gulp-md5-plus](https://github.com/wpfpizicai/gulp-md5-plus)
+
+The difference between this fork and the original is the result:
+```html
+    Sample from a index.html file before transformation:
+    <link rel="stylesheet" type="text/css" href="main.css">
+    gulp-md5-plus
+    <link rel="stylesheet" type="text/css" href="main_afd9d92ebe.css">
+    gulp-md5-url
+    <link rel="stylesheet" type="text/css" href="dev.myqianlan.com/main_afd9d92ebe.css">
+```
 
 ## Usage
 
-First, install `gulp-md5-plus` as a development dependency:
+First, install `gulp-md5-url` as a development dependency:
 
 ```shell
-npm install --save-dev gulp-md5-plus
+npm install --save-dev gulp-md5-url
 ```
 
 Then, add it to your `gulpfile.js`:
 
 ```javascript
-var md5 = require("gulp-md5-plus");
+var md5 = require("gulp-md5-url");
 
 gulp.src("./src/*.css")
-	.pipe(md5(10,'./output/index.html'))
-	.pipe(gulp.dest("./dist"));
+    .pipe(md5(10,'./output/index.html'), 'dev.myqianlan.com/')
+    .pipe(gulp.dest("./dist"));
 ```
 
 md5 all css files in the src folder and change these css names in the quoted html--index.html
+
 
 ```javascript
 
 gulp.task('img' ,function() {
     var imgSrc = './static/img/**',
-        quoteSrc = './output/static/css/**/*.css', // [./output/static/css/**/*.css',./output/static/js/**/*.js']
+        quoteSrc = './output/static/css/**/*.css',
         imgDst = './output/static/img';
 
     return gulp.src(imgSrc)
         .pipe(imagemin())
-        .pipe(md5(10 ,quoteSrc))
+        .pipe(md5(10 ,quoteSrc, 'dev.myqianlan.com/'))
         .pipe(gulp.dest(imgDst));
 });
 
@@ -43,7 +54,7 @@ the directory of the md5ed files in the imgDst folder is the same as that of ori
 
 ## API
 
-### md5(size,file)
+### md5(size,file,prefix)
 
 #### size
 Type: `String`
@@ -57,15 +68,20 @@ Default: null
 
 Optionnal: the file need to replace the file name of the md5ed files. dir is also supported
 
+#### prefix
+Type: `String`
+Default: null
+
+Optionnal: the prefix added to the file name of the md5ed files. dir is also supported
+
 Example:
 ```javascript
-	gulp.src('static/js/*')
-        .pipe(md5(10,'./output/html'))
+    gulp.src('static/js/*')
+        .pipe(md5(10,'./output/html'), 'dev.myqianlan.com/')
         .pipe(gulp.dest('./output'));
 ```
 
 The sample above will append the md5 hash(length : 10) to each of the file in the static/js folder then repalce the link file name in the output/html/ using md5ed file name; at last store all of that into the *output* folder.
-
 
 
 ## License

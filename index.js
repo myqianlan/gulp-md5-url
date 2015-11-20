@@ -5,8 +5,9 @@ var path = require('path')
 , fs = require('fs')
 , glob = require('glob');
 
-module.exports = function (size, ifile) {
+module.exports = function (size, ifile, prefix) {
     size = size | 0;
+    prefix = prefix || '';
     return through.obj(function (file, enc, cb) {
         if (file.isStream()) {
             this.emit('error', new gutil.PluginError('gulp-debug', 'Streaming not supported'));
@@ -31,7 +32,8 @@ module.exports = function (size, ifile) {
         dir = path.dirname(dir);
 
         var md5_filename = filename.split('.').map(function(item, i, arr){
-            return i == arr.length-2 ? item + '_'+ d : item;
+            console.log(item,i,arr)
+            return i == arr.length-2 ? prefix + item + '_'+ d : item;
         }).join('.');
 
         if(Object.prototype.toString.call(ifile) == "[object Array]"){
