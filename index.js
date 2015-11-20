@@ -34,7 +34,9 @@ module.exports = function (size, ifile, prefix) {
         var md5_filename = filename.split('.').map(function(item, i, arr){
             return i == arr.length-2 ? prefix + item + '_'+ d : item;
         }).join('.');
-
+        var no_prefix_md5_filename = filename.split('.').map(function(item, i, arr){
+            return i == arr.length-2 ? item + '_'+ d : item;
+        }).join('.');
         if(Object.prototype.toString.call(ifile) == "[object Array]"){
             ifile.forEach(function(i_ifile){
                 i_ifile && glob(i_ifile,function(err, i_files){
@@ -55,8 +57,7 @@ module.exports = function (size, ifile, prefix) {
             })
         }
 
-        file.path = path.join(dir, md5_filename);
-
+        file.path = path.join(dir, no_prefix_md5_filename);
         this.push(file);
         cb();
     }, function (cb) {
