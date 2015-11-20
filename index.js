@@ -32,7 +32,6 @@ module.exports = function (size, ifile, prefix) {
         dir = path.dirname(dir);
 
         var md5_filename = filename.split('.').map(function(item, i, arr){
-            console.log(item,i,arr)
             return i == arr.length-2 ? prefix + item + '_'+ d : item;
         }).join('.');
 
